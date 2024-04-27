@@ -54,7 +54,7 @@ const Header = () => {
             </li>
             <li>
               <Link
-                to="/message"
+                to="/interviewDetails"
                 className="hover:underline"
                 onClick={() => setMenuOpen(false)}
                 >

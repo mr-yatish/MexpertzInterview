@@ -21,8 +21,8 @@ const StudentDetails = () => {
     fetchData();
   }, [])
   return (
-    <div className="flex justify-center px-4 items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-4xl -mt-12 pb-10 bg-white px-6 h-[450px] rounded-lg shadow-md overflow-y-auto relative">
+    <div className="flex justify-center px-4 items-center min-h-screen bg-gray-100 ">
+      <div className="w-full max-w-4xl -mt-12 pb-10 bg-white px-6 h-[450px] rounded-lg  shadow-md overflow-y-auto relative">
 
         {/* Sticky Header Section */}
         <div className="sticky py-5 top-0 z-10 bg-white">
@@ -45,7 +45,7 @@ const StudentDetails = () => {
             <tbody>
               {students.map((student, i) => (
                 <tr key={i}>
-                  <td className="px-4 py-2 text-sm text-gray-600">{i+1}</td>
+                  <td className="px-4 py-2 text-sm text-gray-600">{i + 1}</td>
                   <td className="px-4 py-2 text-sm text-gray-600">{student.name}</td>
                   <td className="px-4 py-2 text-sm text-gray-600">{student.college}</td>
                   <td className="px-4 py-2 text-sm text-gray-600">{student.status}</td>
@@ -56,6 +56,21 @@ const StudentDetails = () => {
         ) : (
           <div className="text-center text-gray-500">No student details available.</div>
         )}
+        <button onClick={() => {
+          const fetchData = async () => {
+            try {
+              const response = await fetch('http://localhost:4000/download/downloadData');
+              console.log(response);
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              const fetchedData = await response.json();
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          fetchData();
+        }} className="absolute bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Download Data</button>
       </div>
     </div>
   );

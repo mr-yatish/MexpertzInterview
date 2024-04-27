@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import { Header, Signup, Login, PageNotFound , InterviewForm, StudentDetails, AddStudentForm} from "./components";
+import { Header, Signup, Login, PageNotFound, InterviewForm, StudentDetails, AddStudentForm, InterviewDetails } from "./components";
 
 
 
@@ -19,7 +19,7 @@ function App() {
         <Route path="/addStudentForm" element={<AddStudentForm />} />
         <Route path="/interviewForm" element={<InterviewForm />} />
         <Route path="/studentDetails" element={<StudentDetails />} />
-        {/* <Route path="/message" element={<MessagePage />} /> */}
+        <Route path="/interviewDetails" element={<InterviewDetails />} />
       </Routes>
     </Router>
   );

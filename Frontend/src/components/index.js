@@ -5,5 +5,5 @@ import PageNotFound from "./PageNotFound";
 import AddStudentForm from "./AddStudentForm";
 import InterviewForm from "./InterviewForm";
 import StudentDetails from "./StudentDetails";
-
-export {Login, Signup, StudentDetails, InterviewForm, AddStudentForm, Header, PageNotFound};
+import InterviewDetails from "./InterviewDetails";
+export { Login, Signup, StudentDetails, InterviewForm, AddStudentForm, Header, PageNotFound ,InterviewDetails};

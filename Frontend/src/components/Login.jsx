@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Assuming you're using React Router
-
-
+import useFetch from "../hooks/useFetch";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
- 
+
+  const fetchData = async () => {
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      };
+      const response = await fetch('http://localhost:4000/user/login', requestOptions);
+      const fetchedData = await response.json();
+      return fetchedData;
+
+    } catch (error) {
+      setError('Email Already Exits !')
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
-    // Example validation logic
-    if (email === "admin@example.com" && password === "password123") {
-      setError(null);
-    } else {
-      setError("Invalid email or password.");
-    }
+
+
   };
 
   return (

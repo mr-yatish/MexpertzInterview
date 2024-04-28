@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const StudentDetails = () => {
   // Initial state with student details
-  const [students, setStudents] = useState([]); // You can start with an empty array to simulate "no data"
+  const [students, setStudents] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,6 +20,53 @@ const StudentDetails = () => {
     };
     fetchData();
   }, [])
+  function convertArrayOfObjectsToCSV(array) {
+    if (!array || !Array.isArray(array) || array.length === 0) {
+      return '';
+    }
+
+    const delimiter = ',';
+    const keys = Object.keys(array[0]);
+
+    let csvContent = '';
+
+    // Write header
+    csvContent += keys.join(delimiter) + '\n';
+
+    // Write values
+    array.forEach(obj => {
+      const values = keys.map(key => {
+        let value = obj[key];
+        if (typeof value === 'object' && value !== null) {
+          value = JSON.stringify(value);
+        }
+        return String(value);
+      });
+      csvContent += values.join(delimiter) + '\n';
+    });
+
+    return csvContent;
+  }
+  const downloadCSV = (array, filename) => {
+    const csvContent = convertArrayOfObjectsToCSV(array);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      const link = document.createElement("a");
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  };
+
   return (
     <div className="flex justify-center px-4 items-center min-h-screen bg-gray-100 ">
       <div className="w-full max-w-4xl -mt-12 pb-10 bg-white px-6 h-[450px] rounded-lg  shadow-md overflow-y-auto relative">
@@ -57,19 +104,7 @@ const StudentDetails = () => {
           <div className="text-center text-gray-500">No student details available.</div>
         )}
         <button onClick={() => {
-          const fetchData = async () => {
-            try {
-              const response = await fetch('http://localhost:4000/download/downloadData');
-              console.log(response);
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              const fetchedData = await response.json();
-            } catch (error) {
-              console.log(error);
-            }
-          };
-          fetchData();
+          downloadCSV(students, 'data.csv')
         }} className="absolute bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Download Data</button>
       </div>
     </div>

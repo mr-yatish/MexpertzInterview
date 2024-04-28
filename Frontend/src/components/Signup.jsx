@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom"; // Use this for page navigation
-import useFetch from "../hooks/useFetch";
+import { Link, useNavigate } from "react-router-dom"; // Use this for page navigation
+import { useLocation } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -9,35 +9,39 @@ const Signup = () => {
   const [error, setError] = useState(null);
   const [formdata, setFormdata] = useState({});
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
+  const navigate = useNavigate();
+
+  const fetchData = async () => {
+    try {
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formdata)
+      };
+      const response = await fetch('http://localhost:4000/user/signUp', requestOptions);
+      const fetchedData = await response.json();
+      return fetchedData;
+
+    } catch (error) {
+      setError('Email Already Exits !')
+    }
   };
 
   useEffect(() => {
     setFormdata({ name: fullname, email: email, password: password });
   }, [fullname, email, password]);
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-
-    useFetch("http://localhost:4000", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: formdata,
-    });
-
-    // Example: Basic email and password validation
-    if (email && password.length >= 6) {
-      setError(null);
-    } else {
-      setError("Please fill in all fields with valid information.");
+    const data = await fetchData();
+    console.log(data);
+    if (data.hasError) {
+      setError('Email Already Exits !');
+      return;
     }
+    navigate('/login')
   };
 
   return (
@@ -107,14 +111,14 @@ const Signup = () => {
               Sign Up
             </button>
           </div>
-            <div className="text-center mt-4">
-              <span className="text-sm text-gray-600">
-                Already have an account?{" "}
-                <Link to="/login" className="text-blue-600 hover:underline">
-                  Login
-                </Link>
-              </span>
-            </div>
+          <div className="text-center mt-4">
+            <span className="text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-600 hover:underline">
+                Login
+              </Link>
+            </span>
+          </div>
         </form>
       </div>
     </div>

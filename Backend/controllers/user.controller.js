@@ -11,16 +11,17 @@ const { responseMessages } = require("../configs");
 const registerUser = async (req, res) => {
   try {
     const requestData = req.body;
+    console.log(requestData);
     if (await userService.checkEmailExists(requestData.email)) {
       console.log("Email Already Exists");
-      return res.status(200).send({
+      return res.status(400).json({
         hasError: true,
         message: responseMessages.EMAIL_EXISTS,
       });
     }
     // Save User
     const user = await userService.registerUser(requestData);
-    return res.status(200).send({
+    return res.status(200).json({
       hasError: false,
       data: user,
     });

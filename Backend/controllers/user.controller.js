@@ -37,13 +37,15 @@ const registerUser = async (req, res) => {
 // Controller: Login User
 const loginUser = async (req, res) => {
   try {
+    console.log('Entered');
     const userCredential = req.body;
     const user = await userService.getUserByEmail(userCredential.email);
+    console.log(user);
     if (!user) {
       console.log("User Not Found!");
       return res.status(200).send({
         hasError: true,
-        data: responseMessages.USER_NOT_FOUND,
+        message: responseMessages.USER_NOT_FOUND,
       });
     }
 

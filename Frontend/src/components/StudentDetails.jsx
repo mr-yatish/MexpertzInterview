@@ -20,6 +20,7 @@ const StudentDetails = () => {
     };
     fetchData();
   }, [])
+
   function convertArrayOfObjectsToCSV(array) {
     if (!array || !Array.isArray(array) || array.length === 0) {
       return '';
@@ -66,6 +67,7 @@ const StudentDetails = () => {
       }
     }
   };
+
 
   return (
     <div className="flex justify-center px-4 items-center min-h-screen bg-gray-100 ">

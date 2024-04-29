@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Assuming you're using React Router
-import useFetch from "../hooks/useFetch";
+import { Link, useNavigate } from "react-router-dom"; // Assuming you're using React Router
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -14,20 +15,27 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, password }),
       };
-      const response = await fetch('http://localhost:4000/user/login', requestOptions);
+      const response = await fetch('http://localhost:4000/user/login', options);
+      console.log(response);
       const fetchedData = await response.json();
+      console.log(fetchedData);
       return fetchedData;
 
     } catch (error) {
-      setError('Email Already Exits !')
+      console.log(error);
     }
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
+    setError(null)
     e.preventDefault();
+    const user = await fetchData();
+    if (user.message == 'Incorrect Password') return setError('Incorrect Password')
+    if (user.message == 'User Not Found!') return setError('Invalid Email')
 
+    navigate('/studentDetails')
 
   };
 

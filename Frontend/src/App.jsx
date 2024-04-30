@@ -9,8 +9,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="*" element={<PageNotFound />} />
-        <Route path="/" element={<LoginAndSignUpHeader />} />
-        <Route path="/login" element={<LoginAndSignUpHeader loginDetail={{ isLogedIn, setIsLogedIn }} />} />
+        <Route path="/" element={<Login setIsLoggedIn={setIsLogedIn} />} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLogedIn} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/addStudentForm" element={<AddStudentForm />} />
         <Route path="/interviewForm" element={<InterviewForm />} />
@@ -22,22 +22,22 @@ function App() {
 }
 
 // Component with header for login and signup pages
-function LoginAndSignUpHeader({ loginDetail }) {
-  const navigate = useNavigate();
-  return (
-    <>
-      {/* Header not rendered */}
-      <Routes>
+// function LoginAndSignUpHeader({ loginDetail }) {
+//   const navigate = useNavigate();
+//   return (
+//     <>
+//       {/* Header not rendered */}
+//       <Routes>
 
-        {
-          loginDetail?.isLogedIn ? navigate('/studentDetails') : (<Route path="/" element={<Login />} />)
-        }
-        {
-          loginDetail?.isLogedIn ? navigate('/studentDetails') : (<Route path="/login" element={<Login />} />)
-        }
-      </Routes>
-    </>
-  );
-}
+//         {
+//           loginDetail?.isLogedIn ? navigate('/studentDetails') : (<Route path="/" element={<Login />} />)
+//         }
+//         {
+//           loginDetail?.isLogedIn ? navigate('/studentDetails') : (<Route path="/login" element={<Login />} />)
+//         }
+//       </Routes>
+//     </>
+//   );
+// }
 
 export default App;

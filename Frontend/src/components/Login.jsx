@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Assuming you're using React Router
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -20,7 +20,6 @@ const Login = () => {
       const response = await fetch('http://localhost:4000/user/login', options);
       console.log(response);
       const fetchedData = await response.json();
-      console.log(fetchedData);
       return fetchedData;
 
     } catch (error) {
@@ -34,8 +33,8 @@ const Login = () => {
     const user = await fetchData();
     if (user.message == 'Incorrect Password') return setError('Incorrect Password')
     if (user.message == 'User Not Found!') return setError('Invalid Email')
-
-    navigate('/studentDetails')
+    setIsLoggedIn(true);
+    navigate('/studentDetails');
 
   };
 
